@@ -3,30 +3,24 @@ use Mojo::Base -strict;
 
 use lib "../cheatsheet/lib";
 
+use Advent::Grid::Utils qw(get_grid);
 use Advent::Utils::Problem qw(submit);
-
-use List::AllUtils qw(firstidx);
 
 my $file = defined $ARGV[0] ? $ARGV[0] : 'inputs/day6';
 $file = "inputs/day6-$file" if $file =~ /test/;
 open(my $fh, '<', $file) or die $!;
 
-my $width;
-my $height = 0;
-my $grid = [];
 my $startx = -1;
 my $starty = -1;
 
-while (<$fh>) {
-    chomp;
-    my @line = split //;
-    push @$grid, @line;
-    if (grep { $_ eq '^' } @line) {
-        $startx = firstidx { $_ eq '^' } @line;
-        $starty = $height;
+my ($grid, $width, $height) = get_grid($fh);
+for my $y (0 .. $height - 1) {
+    for my $x (0 .. $width - 1) {
+        if ($grid->[$y * $width + $x] eq '^') {
+            $startx = $x;
+            $starty = $y;
+        }
     }
-    $width = @line if !defined $width;
-    $height++;
 }
 
 my $next_pos = {
