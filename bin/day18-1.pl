@@ -57,7 +57,6 @@ while (@q) {
         $st->{$nx, $ny} = [$x, $y];
         
         if ($nx == $endx && $ny == $endy) {
-            my @path = ([$nx, $ny]);
             my $prev = $st->{$nx, $ny};
             $total++;
             while (1) {
